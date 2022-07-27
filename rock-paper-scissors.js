@@ -1,68 +1,98 @@
-let playerScore = 0;
-let computerScore = 0;
-let computerSelection;
-let playerSelection;
-let question = "Better player wins. What's your weapon?";
-let question2 = "Not a valid weapon... What's your weapon?";
+window.onload = function(){
 
-const choices = ["rock", "paper", "scissors"];
+    let playerScore = 0;
+    let computerScore = 0;
+    let roundWin = '';
 
-function getComputerChoice(){
-    const computerChoice = Math.floor(Math.random() * choices.length);
-    return choices[computerChoice];
-}
+    const rockBtn = document.getElementById('rockBtn')
+    const paperBtn = document.getElementById('paperBtn')
+    const scissorsBtn = document.getElementById('scissorsBtn')
+    const pScore = document.getElementById('p-score')
+    const cScore = document.getElementById('c-score')
 
-function playRound(playerSelection, computerSelection) {
+    const choices = ["rock", "paper", "scissors"];
 
-    if(playerSelection == "rock" && computerSelection == "paper"){
-        computerScore++;
-    }
-    else if(playerSelection == "rock" && computerSelection == "scissors"){
-        playerScore++;
-    }
-    else if(playerSelection == "paper" && computerSelection == "rock"){
-        playerScore++;
-    }
-    else if(playerSelection == "paper" && computerSelection == "scissors"){
-        computerScore++;
-    }
-    else if(playerSelection == "scissors" && computerSelection == "paper"){
-        playerScore++;
-    }
-    else if(playerSelection == "scissors" && computerSelection == "rock"){
-        computerScore++;
+    rockBtn.addEventListener('click', () => getPlayerChoice('rock'))
+    paperBtn.addEventListener('click', () => getPlayerChoice('paper'))
+    scissorsBtn.addEventListener('click', () =>getPlayerChoice('scissors'))
+
+    function getComputerChoice(){
+        const computerChoice = Math.floor(Math.random() * choices.length);
+        return choices[computerChoice];
     }
 
-}
+    function getPlayerChoice(playerSelection){
 
-function game(){
+        const computerSelection = getComputerChoice();
+        updateChoice(playerSelection, computerSelection)
+        playRound(playerSelection, computerSelection)
 
-    let flag = true;
-    for (let i = 0; i < 5; i++) {
-        
-        playerSelection = prompt("Round " + (i+1) + ". " + question).toLowerCase();
-        computerSelection = getComputerChoice();
-
-        while (flag = true){
-            if(!choices.includes(playerSelection)){
-                playerSelection = prompt(question2).toLowerCase();
-            }
-            else{
+    }
+    function updateChoice(playerSelection, computerSelection){
+        switch(playerSelection){
+            case 'rock':
+                document.getElementById('p-choice').innerHTML = '<i class="fa fa-4x fa-hand-rock-o" aria-hidden="true"></i>';
                 break;
-            }
+            case 'paper':
+                document.getElementById('p-choice').innerHTML = '<i class="fa fa-4x fa-hand-paper-o" aria-hidden="true"></i>';
+                break;
+            case 'scissors':
+                document.getElementById('p-choice').innerHTML = '<i class="fa fa-4x fa-hand-scissors-o" aria-hidden="true"></i>';
+                break;
         }
-        playRound(playerSelection, computerSelection);
-     }
 
-     if(playerScore == computerScore){
-        alert("Tie Game! "  + "Score: " + playerScore + " - " + computerScore);
-     }
-     else if(playerScore > computerScore){
-        alert("Player wins! " + "Score: " + playerScore + " - " + computerScore);
-     }
-     else{
-        alert("Computer wins! "  + "Score: " + playerScore + " - " + computerScore);
-     }
+        switch(computerSelection){
+            case 'rock':
+                document.getElementById('c-choice').innerHTML = '<i class="fa fa-4x fa-hand-rock-o" aria-hidden="true"></i>';
+                break; 
+            case 'paper':
+                document.getElementById('c-choice').innerHTML = '<i class="fa fa-4x fa-hand-paper-o" aria-hidden="true"></i>';
+                break;
+            case 'scissors':
+                document.getElementById('c-choice').innerHTML = '<i class="fa fa-4x fa-hand-scissors-o" aria-hidden="true"></i>';
+                break;
+        }
+        gameScore()
+    }
+
+    function gameScore(){
+        
+          pScore.textContent = `Player: ${playerScore}`
+          cScore.textContent = `Computer: ${computerScore}`
+
+    }
+    function playRound(playerSelection, computerSelection) {
+
+        if ((playerSelection === 'rock' && computerSelection === 'scissors') ||
+            (playerSelection === 'scissors' && computerSelection === 'paper') ||
+            (playerSelection === 'paper' && computerSelection === 'rock')){
+
+            playerScore++
+
+        }
+        if ((computerSelection === 'rock' && playerSelection === 'scissors') ||
+            (computerSelection === 'scissors' && playerSelection === 'paper') ||
+            (computerSelection === 'paper' && playerSelection === 'rock')){
+
+            computerScore++
+
+        }
+
+    }
+    function game(){
+        
+        if(playerScore == computerScore){
+            alert("Tie Game! "  + "Score: " + playerScore + " - " + computerScore);
+        }
+        else if(playerScore > computerScore){
+            alert("Player wins! " + "Score: " + playerScore + " - " + computerScore);
+        }
+        else{
+            alert("Computer wins! "  + "Score: " + playerScore + " - " + computerScore);
+        }
+
+    }
+
 }
 
-game();
+
